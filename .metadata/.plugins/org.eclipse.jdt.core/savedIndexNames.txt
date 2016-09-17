@@ -1,0 +1,20 @@
+INDEX VERSION 1.129+C:\Users\Tegan\project_stegosaurus\.metadata\.plugins\org.eclipse.jdt.core
+3139156944.index
+2556160766.index
+3550889823.index
+3440101134.index
+3525971557.index
+1740250991.index
+1155473911.index
+3878263623.index
+644073647.index
+676683652.index
+221530541.index
+1795399710.index
+1143498191.index
+441856223.index
+3175505882.index
+1245740527.index
+4148286889.index
+2106349219.index
+2603177870.index
