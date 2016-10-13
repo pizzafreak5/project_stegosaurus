@@ -22,7 +22,7 @@ class GUIFrame extends JPanel
 	{	
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
-		
+		//This is a useless Piece of code
 ///////////// Page 1 ////////////////////////////////////////////	
 		JComponent page1 = makeTextPanel("Page 1");
 		tabbedPane.addTab("About",page1);
