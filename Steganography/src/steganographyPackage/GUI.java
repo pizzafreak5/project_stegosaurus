@@ -88,12 +88,12 @@ class GUIFrame extends JPanel
 		mapPanel.setBorder(maptitle);
 
 		JPanel uploadPanel = new JPanel();
-		TitledBorder uploadTitle = BorderFactory.createTitledBorder("Upload your Photo");
+		TitledBorder uploadTitle = BorderFactory.createTitledBorder("Host Picture");
 		uploadPanel.setBorder(uploadTitle);
 		uploadPanel.add(uploadButton);
 		
 		JPanel encryptPanel = new JPanel();
-		TitledBorder encryptTitle = BorderFactory.createTitledBorder("Encrypt your Photo");
+		TitledBorder encryptTitle = BorderFactory.createTitledBorder("Secret File");
 		encryptPanel.setBorder(encryptTitle);
 		encryptPanel.add(encryptButton);
 		
