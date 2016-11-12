@@ -19,7 +19,7 @@ public class mainPopUp
 		
 		// Display the window
 		frame.pack();
-		frame.setSize(500, 500);
+		frame.setSize(500, 350);
 		frame.setVisible(true);
 	}
 
