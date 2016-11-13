@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
@@ -101,6 +102,13 @@ public class View {
 	
     public Icon previousIcon; 
     public JButton previousButton;
+    
+    public BufferedImage slide0;
+    public BufferedImage slide1;
+    public BufferedImage slide2;
+    public BufferedImage slide3;
+    public BufferedImage slideArray[];
+
     
 
     
@@ -298,11 +306,14 @@ public class View {
 		slideShowPanel = new JPanel();
 		slideShowIcon = new ImageIcon();
 		try {
-			BufferedImage slide1Img = ImageIO.read(new File("src/slide1.png"));
+			slide0 = ImageIO.read(new File("src/slide0.png"));
+			slide1 = ImageIO.read(new File("src/slide1.png"));
+			slide2 = ImageIO.read(new File("src/slide2.png"));
+			slide3 = ImageIO.read(new File("src/slide3.png"));
+			slideArray = new BufferedImage[]{slide0, slide1, slide2, slide3};
 		
 		
-		
-		 	slideShowIcon.setImage(slide1Img);
+		 	slideShowIcon.setImage(slide0);
 		    slideShowLabel = new JLabel();
 		    slideShowLabel.setIcon(slideShowIcon);
 		} catch (IOException e) {
@@ -321,6 +332,7 @@ public class View {
 		
 		previousIcon = new ImageIcon("src/Left-48.png");
 		previousButton = new JButton(previousIcon);
+		previousButton.setEnabled(false);
 		
 		tutorialButtonPanel.add(previousButton);
 		tutorialButtonPanel.add(nextButton);
@@ -434,4 +446,41 @@ public class View {
     	}
     	page3.repaint();
     }
+    public void setSlideNumber(int number){
+        
+    	for(int i=0; i < slideArray.length; i++)
+    	{
+    		if(i == number)
+    		{
+    			slideShowIcon.setImage(slideArray[i]);
+    			slideShowLabel.setIcon(slideShowIcon);
+    			
+    		}
+    	}
+    	page4.repaint();
+
+    }
+    public void showEncryptnComplDialog()
+    {
+    	Icon dinoIcon = new ImageIcon("src/Stegosaurus150x75.png");
+    	
+    	// Custom title, custom icon
+    	JOptionPane.showMessageDialog(frame,
+    	    "Encryption Complete",
+    	    "Steganography Instructional Tool",
+    	    JOptionPane.INFORMATION_MESSAGE,
+    	    dinoIcon);
+    }
+    public void showDecryptnComplDialog()
+    {
+    	Icon dinoIcon = new ImageIcon("src/Stegosaurus150x75.png");
+    	
+    	// Custom title, custom icon
+    	JOptionPane.showMessageDialog(frame,
+    	    "Decryption Complete",
+    	    "Steganography Instructional Tool",
+    	    JOptionPane.INFORMATION_MESSAGE,
+    	    dinoIcon);
+    }
 }
+

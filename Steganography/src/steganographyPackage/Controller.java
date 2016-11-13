@@ -143,6 +143,7 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 				
 				goEncrypt();
+				
 			}
 		});
 		
@@ -162,6 +163,20 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 				
 				goDecrypt();				
+			}
+		});
+		
+		view.nextButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				nextSlide();				
+			}
+		});
+		
+		view.previousButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				previousSlide();				
 			}
 		});
 		
@@ -211,7 +226,7 @@ public class Controller {
 				System.out.println("Top to Bottom selected");
 			}
 		}
-    	
+    	view.showDecryptnComplDialog();
     }
     private void goEncrypt() {
 		model.goEncrypt();	
@@ -249,7 +264,7 @@ public class Controller {
 				System.out.println("Top to Bottom selected");
 			}
 		}
-		
+		view.showEncryptnComplDialog();
 	}
     private void uploadEncryptFile() {
     	model.goUploadEncrypt(this.view);
@@ -299,5 +314,48 @@ public class Controller {
     		view.encryptedButton.setOpaque(true); 
     		view.encryptedButton.setBorderPainted(true);
     	}
+	}
+    private void nextSlide() {
+		
+		model.goToNextSlide();
+		
+		if(model.getSlideNumber() == view.slideArray.length-1)
+    	{
+    		view.nextButton.setEnabled(false);
+    	}
+		else
+    	{
+    		view.nextButton.setEnabled(true);
+    	}
+		if(model.getSlideNumber() == 0)
+    	{
+    		view.previousButton.setEnabled(false);
+    	}
+    	else
+    	{
+    		view.previousButton.setEnabled(true);
+    	}
+		view.setSlideNumber(model.getSlideNumber());
+	}
+    private void previousSlide() {
+    	model.goToPreviousSlide();
+    	
+    	if(model.getSlideNumber() == view.slideArray.length)
+    	{
+    		view.nextButton.setEnabled(false);
+    	}
+		else
+    	{
+    		view.nextButton.setEnabled(true);
+    	}
+    	if(model.getSlideNumber() == 0)
+    	{
+    		view.previousButton.setEnabled(false);
+    	}
+    	else
+    	{
+    		view.previousButton.setEnabled(true);
+    	}
+    	view.setSlideNumber(model.getSlideNumber());
 	}
 }

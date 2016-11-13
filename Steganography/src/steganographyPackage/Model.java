@@ -192,6 +192,19 @@ private JFileChooser directoryChooser = null;
 		return this.directoryChooser;
 	}
 
+	public void goToNextSlide() {
+		
+		x++;
+	}
+
+	public void goToPreviousSlide() {
+		
+		x--;
+	}
+	public int getSlideNumber() {
+		
+		return this.x;
+	}
 	
 
 	
