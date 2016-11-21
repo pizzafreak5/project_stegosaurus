@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 public class Model {
 
 private int x;
-private BufferedImage uplaodedImg = null;
+private BufferedImage uploadedImg = null;
 private BufferedImage originalImg = null;
 private BufferedImage imgToEncrypt = null;
 private BufferedImage imgToDecrypt = null;
@@ -60,7 +60,7 @@ private JFileChooser directoryChooser = null;
 				System.out.println("Reading image from disk. ");
 		        try {
 		        	
-		        	uplaodedImg = ImageIO.read(new File(file.getAbsolutePath()));
+		        	uploadedImg = ImageIO.read(new File(file.getAbsolutePath()));
 					
 				} catch (IOException e1) {
 					System.out.println("Exception: " + e1.getMessage());
@@ -170,9 +170,9 @@ private JFileChooser directoryChooser = null;
 		}
 		
 	}
-	public BufferedImage getUplaodedImg()
+	public BufferedImage getUploadedImg()
 	{
-		return this.uplaodedImg;
+		return this.uploadedImg;
 	}
 	public BufferedImage getImgToEncrypt()
 	{ 
