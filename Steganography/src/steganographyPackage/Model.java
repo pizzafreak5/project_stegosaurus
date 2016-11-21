@@ -25,6 +25,7 @@ private JFileChooser directoryChooser = null;
     
     public Model(){
         x = 0;
+        
     }
     
     public Model(int x){
