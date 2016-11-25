@@ -2,9 +2,6 @@
  * Created by Garrett on 10/18/2016.
  */
 
-
-package steganographyPackage;	
-	
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,12 +12,8 @@ import java.lang.Math.*;
 public class Image_encoder {
 
 
-	
-    /*
-    public static void main(String [] args){
-        linear_map("BLUE", "black_blank.png", "default_secret.txt","default_out.png");
-    }
-    */
+    
+
 
     public static String linear_map(String color_field, String host_filename, String secret_filename, String output_filename) {
 
@@ -100,30 +93,19 @@ public class Image_encoder {
          ColorModel color_model = image.getColorModel(); //Might not use this, but this tells us if there is an
                                                         //alpha channel
 
-        int field_number = 0;
-        int field_mask = 0x00000000;
+        String file_format = host_filename.substring(host_filename.lastIndexOf('.'));
+        String file_format_clean = file_format.substring(1);
+        String short_secret_filename = secret_filename;
 
 
-        //Setup the relevant color field information:
-        if (color_field.equals("RED")){
-            field_number = 2;
-            field_mask = 0x00ff0000;
+        if (secret_filename.contains("/")){
+            short_secret_filename = secret_filename.substring(secret_filename.lastIndexOf('/') + 1);
         }
 
-        else if (color_field.equals("GREEN")){
-            field_number = 1;
-            field_mask = 0x0000ff00;
-        }
 
-        else if (color_field.equals("BLUE")){
-            field_number = 0;
-            field_mask = 0x000000ff;
-        }
+        System.out.println("short_secret_filename: " + short_secret_filename);
 
-        else{
-            //This is a bad place to be
-            return("ERROR: Invalid color field");
-        }
+
         //For this encoder to work, the host file must have more pixels than bits in the secret file,
         //specificaly, it must contain at least
         // (number_of_bits_in_secret + number_of_delimiters + bits_in_filename_and_other_decoder_data)
@@ -191,7 +173,7 @@ public class Image_encoder {
 
                     //Finaly, we will write the pixel to the image
                     image.setRGB(pixel_x_counter,pixel_y_counter,new_pixel);
-                    System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
+                    //System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
                     //Easy, right?
                 }
 
@@ -217,7 +199,7 @@ public class Image_encoder {
 
         //And now write the new pixel
         image.setRGB(pixel_x_counter,pixel_y_counter,new_pixel);
-        System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
+        System.out.println("Fist delimiter at " + pixel_x_counter + " , " + pixel_y_counter);
 
         //And advance the pixel
         next_pixel = advance_pixel(height, width, pixel_x_counter, pixel_y_counter);
@@ -251,7 +233,7 @@ public class Image_encoder {
                         new_pixel = modify_pixel(current_pixel, color_field, false);
 
                         image.setRGB(pixel_x_counter,pixel_y_counter, new_pixel);
-                        System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
+                        //System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
 
 
                     }
@@ -278,16 +260,18 @@ public class Image_encoder {
 
         //And now write the new pixel
         image.setRGB(pixel_x_counter,pixel_y_counter,new_pixel);
-        System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
+        System.out.println("Second delimiter at " + pixel_x_counter + " , " + pixel_y_counter);
 
         //No need to advance the pixel, because now we are done
 
         try{
-            File outputfile = new File("default_output.png");
-            ImageIO.write(image, "png", outputfile);
+            File outputfile = new File(output_filename + file_format);
+            ImageIO.write(image, file_format_clean, outputfile);
         } catch (IOException e) {
             System.out.println("FUCK" + e);
         }
+
+        System.out.println("Host extension: " + file_format + "   " + file_format_clean);
 
         return "Encoded Secret File Successfully";
 
@@ -330,10 +314,11 @@ public class Image_encoder {
         int result_pixel = 0;
 
         work_pixel = work_pixel >> (8 * shift_multiplier);
+        work_pixel = work_pixel & field_mask;
+
 
         if (delimiter){
             if (work_pixel == 0x000000FF || work_pixel == 0x000000FE){
-                System.out.println("Found a pixel w/ delim at limit");
 
                 result_pixel = current_pixel - (0x00000002 << (8 * shift_multiplier));
             }
@@ -350,7 +335,7 @@ public class Image_encoder {
             }
         }
 
-        System.out.println("Converted pixel " + Integer.toHexString(current_pixel) + " to " + Integer.toHexString(result_pixel));
+        //System.out.println("Converted pixel " + Integer.toHexString(current_pixel) + " to " + Integer.toHexString(result_pixel));
         return result_pixel;
     }
 
