@@ -9,10 +9,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.image.ColorModel;
 import java.lang.Math.*;
-public class image_encoder {
+public class Image_encoder {
 
-
-    
 
 
     public static String linear_map(String color_field, String host_filename, String secret_filename, String output_filename) {
@@ -172,7 +170,7 @@ public class image_encoder {
 
                     //Finaly, we will write the pixel to the image
                     image.setRGB(pixel_x_counter,pixel_y_counter,new_pixel);
-                    System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
+                    //System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
                     //Easy, right?
                 }
 
@@ -198,7 +196,7 @@ public class image_encoder {
 
         //And now write the new pixel
         image.setRGB(pixel_x_counter,pixel_y_counter,new_pixel);
-        System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
+        System.out.println("Fist delimiter at " + pixel_x_counter + " , " + pixel_y_counter);
 
         //And advance the pixel
         next_pixel = advance_pixel(height, width, pixel_x_counter, pixel_y_counter);
@@ -232,7 +230,7 @@ public class image_encoder {
                         new_pixel = modify_pixel(current_pixel, color_field, false);
 
                         image.setRGB(pixel_x_counter,pixel_y_counter, new_pixel);
-                        System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
+                        //System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
 
 
                     }
@@ -259,7 +257,7 @@ public class image_encoder {
 
         //And now write the new pixel
         image.setRGB(pixel_x_counter,pixel_y_counter,new_pixel);
-        System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
+        System.out.println("Second delimiter at " + pixel_x_counter + " , " + pixel_y_counter);
 
         //No need to advance the pixel, because now we are done
 
@@ -314,7 +312,7 @@ public class image_encoder {
 
         work_pixel = work_pixel >> (8 * shift_multiplier);
         work_pixel = work_pixel & field_mask;
-        System.out.println("SHifted pix:" + Integer.toHexString(work_pixel));
+        
 
         if (delimiter){
             if (work_pixel == 0x000000FF || work_pixel == 0x000000FE){
@@ -334,7 +332,7 @@ public class image_encoder {
             }
         }
 
-        System.out.println("Converted pixel " + Integer.toHexString(current_pixel) + " to " + Integer.toHexString(result_pixel));
+        //System.out.println("Converted pixel " + Integer.toHexString(current_pixel) + " to " + Integer.toHexString(result_pixel));
         return result_pixel;
     }
 
