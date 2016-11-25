@@ -42,9 +42,10 @@ private String selectedDecryptFilePath;
     }
     
 
-	public void goDecrypt() {
+	public void goDecrypt() throws IOException {
 		System.out.println("Application launch");
-	
+		String temp_string = Image_decoder.linear_decode(getEncryptedFilePath(), getSecretFilePath());
+		System.out.println("temp_string/decoder result: "+ temp_string);
 	}
 
 	public void goEncrypt(String colorString) {

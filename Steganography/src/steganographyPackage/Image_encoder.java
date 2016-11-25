@@ -2,8 +2,9 @@
  * Created by Garrett on 10/18/2016.
  */
 
-package steganographyPackage;
 
+package steganographyPackage;	
+	
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,8 +15,14 @@ import java.lang.Math.*;
 public class Image_encoder {
 
 
+	
+    /*
+    public static void main(String [] args){
+        linear_map("BLUE", "black_blank.png", "default_secret.txt","default_out.png");
+    }
+    */
 
-    public static String linear_map(String color_field, String host_filename, String secret_filename, String output_filepath) {
+    public static String linear_map(String color_field, String host_filename, String secret_filename, String output_filename) {
 
         /*
         Description of linear mapping function:
@@ -24,17 +31,14 @@ public class Image_encoder {
         For the special case that the host pixel color field is 0xFF, the maximum value for
         a byte, the color field value is decreased by one, to make 0xFE.
         The host file pixel is then advanced to the next pixel.
-
         Some pixels in the modified image will have their color field augmented by 2 values, rather
         than one, Ex. 0xA2 -> 0xA4, 0xFE -> 0xFC or 0xFF -> 0x FD. This is a special symbol, delimiting data that
         is meant for the decoder to use. For example, the modified image will include a run of data
         which represents the secret file filename, then a delimiter pixel, and then a run of data
         representing the contents of the secret file, and then a delimiter to let the decoder know
         that the data set has ended.
-
         Obviously, this scheme with a linear encoding is terribly easy to discover, but considering
         this encoding scheme is for educational purposes, it doesn't matter.
-
         For the return, if there was an error, this function will return an error code. If there wasn't,
         this function will return the filename of the logging file
          */
@@ -44,18 +48,15 @@ public class Image_encoder {
         This algorithm works under the assumption that the secret file will be encoded into an image,
         in other words, that the host file is an image. The host file is read in with java's
         java.awt.image class, and represented as a java.awt.image.BufferedImage
-
         This is cool because the BufferedImage datastructure is essentialy a matrix of pixels,
         each pixel represented by an int, or 4 bytes, such as 0x00112233.
         The fist byte, 0x00 in the above example, represents the alpha channel. In a jpg, this is
         always 0x00. The next byte, 0x11, is red, and 0x22 and 0x33 are green and blue respectively.
-
         The secret file is a FileInputStream so that the file can be read byte-by-byte. When a byt is
         read from the stream, it is read into an integer, and only the last byte in the integer will
         be filled with data for the stream. So, the integer will take the form:
             0x 00 00 00 xx
         where xx is the byte from the stream.
-
         Important for this encoder is a knowledge of bit-wise operators, such as:
         | bit-wise OR
         ^ bit-wise XOR
@@ -63,10 +64,8 @@ public class Image_encoder {
         >> bit-shift right
         << bit-shift left
         ~ bit-wise compliment
-
         About some future changes:
         Some actions are repeated enough to warrant they're
-
          */
 
         BufferedImage image = null; //This is initialy set to the host image, but will become
@@ -74,8 +73,7 @@ public class Image_encoder {
         File host_file = null;      //This is the host image file
         FileInputStream secret_file = null; //This is the secret file, and it can be any file-type.
 
-        System.out.println("Encoder start");
-        
+
         //Attempt to read file and import image
         try{
             //Open host file and read into image
@@ -105,8 +103,7 @@ public class Image_encoder {
         int field_number = 0;
         int field_mask = 0x00000000;
 
-        System.out.println("initialization complete");
-        
+
         //Setup the relevant color field information:
         if (color_field.equals("RED")){
             field_number = 2;
@@ -167,11 +164,10 @@ public class Image_encoder {
 
         //These are used when modifing pixels
         int current_pixel = 0;
-        int work_pixel = 0;
         int new_pixel = 0;
         int modify_pixel = 0;
+        int[] next_pixel;
 
-        System.out.println("czech is complete");
 
         //Encode the filename
         for(char c : secret_filename.toCharArray()){
@@ -185,61 +181,17 @@ public class Image_encoder {
                 //turn all bits to 0 with mask
                 target_bit = target_bit & 0x00000001;
 
+                current_pixel = image.getRGB(pixel_x_counter,pixel_y_counter);
+
 
                 //check if bit is 1
                 if (target_bit > 0){
-                    //If the bit is high, increment or decrement the appropriate color field
-                    //as appropriate.
-                    current_pixel = image.getRGB(pixel_x_counter,pixel_y_counter);
-                    new_pixel = image.getRGB(pixel_x_counter,pixel_y_counter);
-                    modify_pixel = 0x00000000;
 
-                    //first we mask the pixel to get only the appropriate color field
-
-                    work_pixel = current_pixel & field_mask;
-
-                    //Now we must shift the byte to least-significant byte
-                    work_pixel = work_pixel >> (field_number * 8);
-                    //Field number is 0 for blue (no shift), 1 for green (1 byte shift) and
-                    //2 for red (2 byte shift). Whatever color-field we had, it is now in the
-                    //blue spot
-
-                    //First we check if the colorfield is 'full',, or at FF. if this is the case,
-                    // we decrement it, rather than increment. This means the decoder will have to
-                    //check color fields for a magnitude difference, not a positive difference.
-                    // (Check down as well as up)
-
-                    //Now to check if it is 'full'
-                    if (work_pixel == 0x000000ff){
-                        //It is, so we decrement the bit
-                        modify_pixel = 0x00000001;
-                        modify_pixel = modify_pixel << (field_number * 8);
-
-                        new_pixel = new_pixel - modify_pixel;
-
-                        //In essence, here we shift a byte valued at 1 to the same field as the color, so that
-                        //we get results such as:
-                        //   0x00ff0000
-                        // - 0x00010000
-                        //   0x00fe0000
-                        // or
-                        //   0x000000ff
-                        // - 0x00000001
-                        //   0x000000fe
-                    }
-                    else{
-                        //Now we increment the color field of the pixel if it
-                        //was not full
-                        modify_pixel = 0x00000001;
-                        modify_pixel = modify_pixel << (field_number * 8);
-
-                        new_pixel = new_pixel + modify_pixel;
-
-                        //Same concept as above
-                    }
+                    new_pixel = modify_pixel(current_pixel, color_field, false);
 
                     //Finaly, we will write the pixel to the image
                     image.setRGB(pixel_x_counter,pixel_y_counter,new_pixel);
+                    System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
                     //Easy, right?
                 }
 
@@ -248,58 +200,29 @@ public class Image_encoder {
                 //width, set x to 0 (like a carrage return) and increment y
                 // (like a newline)
 
-                if (!(pixel_x_counter < width)){
-                    pixel_x_counter = 0;
-                    pixel_y_counter++;
-                }
-                else{
-                    pixel_x_counter++;
-                }
+                next_pixel = advance_pixel(height, width, pixel_x_counter, pixel_y_counter);
+                pixel_x_counter = next_pixel[0];
+                pixel_y_counter = next_pixel[1];
+
+
             }
-            
-        }	System.out.println("file name encoded");
+        }
 
         //Now we've written the filename to the host file.
         //Next, we need to put a special marker to denote the end of the filename.
 
         current_pixel = image.getRGB(pixel_x_counter, pixel_y_counter);
 
-        //Isolate
-        work_pixel = current_pixel & field_mask;
-
-        //Now we must shift the byte to least-significant byte
-        work_pixel = work_pixel >> (field_number * 8);
-
-        //Again, we check if the color field is at max value, FF,
-        //but this time we have to check if its at FE aswell, because neither
-        //could be incremented twice (FE + 02 = 100)
-        if (work_pixel == 0x000000ff || work_pixel == 0x000000fe){
-            //It is, so we decrement the bit
-            modify_pixel = 0x00000002;
-            modify_pixel = modify_pixel << (field_number * 8);
-
-            new_pixel = new_pixel - modify_pixel;
-        }
-        else{
-            //Now we increment the color field of the pixel if it
-            //was not full
-            modify_pixel = 0x00000002;
-            modify_pixel = modify_pixel << (field_number * 8);
-
-            new_pixel = new_pixel + modify_pixel;
-        }
+        new_pixel = modify_pixel(current_pixel, color_field, true);
 
         //And now write the new pixel
         image.setRGB(pixel_x_counter,pixel_y_counter,new_pixel);
+        System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
 
         //And advance the pixel
-        if (!(pixel_x_counter < width)){
-            pixel_x_counter = 0;
-            pixel_y_counter++;
-        }
-        else{
-            pixel_x_counter++;
-        }
+        next_pixel = advance_pixel(height, width, pixel_x_counter, pixel_y_counter);
+        pixel_x_counter = next_pixel[0];
+        pixel_y_counter = next_pixel[1];
 
         //Now that we have the filename and the delimiter, we have to read the actual image into the file
         int input_byte;
@@ -325,42 +248,18 @@ public class Image_encoder {
                         //Of course if it is, check if the color field of the current pixel is at max (FF)
                         current_pixel = image.getRGB(pixel_x_counter, pixel_y_counter);
 
-                        //Isolate
-                        work_pixel = current_pixel & field_mask;
-
-                        //Now we must shift the byte to least-significant byte
-                        work_pixel = work_pixel >> (field_number * 8);
-
-                        //Again, we check if the color field is at max value, FF
-                        if (work_pixel == 0x000000ff){
-                            //It is, so we decrement the bit
-                            modify_pixel = 0x00000001;
-                            modify_pixel = modify_pixel << (field_number * 8);
-
-                            new_pixel = new_pixel - modify_pixel;
-                        }
-                        else{
-                            //Now we increment the color field of the pixel if it
-                            //was not full
-                            modify_pixel = 0x00000001;
-                            modify_pixel = modify_pixel << (field_number * 8);
-
-                            new_pixel = new_pixel + modify_pixel;
-                        }
+                        new_pixel = modify_pixel(current_pixel, color_field, false);
 
                         image.setRGB(pixel_x_counter,pixel_y_counter, new_pixel);
+                        System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
 
 
                     }
 
                     //And advance the pixel
-                    if (!(pixel_x_counter < width)){
-                        pixel_x_counter = 0;
-                        pixel_y_counter++;
-                    }
-                    else{
-                        pixel_x_counter++;
-                    }
+                    next_pixel = advance_pixel(height, width, pixel_x_counter, pixel_y_counter);
+                    pixel_x_counter = next_pixel[0];
+                    pixel_y_counter = next_pixel[1];
 
                 }
             }
@@ -375,46 +274,84 @@ public class Image_encoder {
 
         current_pixel = image.getRGB(pixel_x_counter, pixel_y_counter);
 
-        //Isolate
-        work_pixel = current_pixel & field_mask;
-
-        //Now we must shift the byte to least-significant byte
-        work_pixel = work_pixel >> (field_number * 8);
-
-        //Again, we check if the color field is at max value, FF, or at FE, as either
-        //cannot be incremented twice
-        if (work_pixel == 0x000000ff || work_pixel == 0x000000fe){
-            //It is, so we decrement the bit
-            modify_pixel = 0x00000002;
-            modify_pixel = modify_pixel << (field_number * 8);
-
-            new_pixel = new_pixel - modify_pixel;
-        }
-        else{
-            //Now we increment the color field of the pixel if it
-            //was not full
-            modify_pixel = 0x00000002;
-            modify_pixel = modify_pixel << (field_number * 8);
-
-            new_pixel = new_pixel + modify_pixel;
-        }
+        new_pixel = modify_pixel(current_pixel, color_field, true);
 
         //And now write the new pixel
         image.setRGB(pixel_x_counter,pixel_y_counter,new_pixel);
+        System.out.println("At " + pixel_x_counter + " , " + pixel_y_counter);
 
         //No need to advance the pixel, because now we are done
-        
+
         try{
-        	File outputfile = new File(output_filepath + "encoder_result.jpg");
-        	ImageIO.write(image, "jpg", outputfile);
-        } catch (IOException e){
-        	System.out.println("FUCK" + e);
-        	return("It dun fucked up on output");
+            File outputfile = new File(output_filename);
+            ImageIO.write(image, "png", outputfile);
+        } catch (IOException e) {
+            System.out.println("FUCK" + e);
         }
 
         return "Encoded Secret File Successfully";
 
 
+    }
+
+    //return the next position of x and y
+    public static int [] advance_pixel(int image_height, int image_width, int x, int y){
+        int[] result;
+        result = new int[2];
+
+        if (x == (image_width - 1)){
+            result[0] = 0;
+            result[1] = (y+1);
+        }
+        else{
+            result[0] = (x + 1);
+            result[1] = y;
+        }
+
+        return result;
+    }
+
+    //This function takes the current pixel color, and ticks the appropriate color field up or down
+    //one or two, depending on delimiter's value. it Returns the new pixel
+    // color field
+    public static int modify_pixel (int current_pixel, String colorfield, boolean delimiter){
+
+        int shift_multiplier = 0;
+        int field_mask = 0x0000FF;
+
+        if (colorfield.equals("RED")){
+            shift_multiplier = 2;
+        }
+        else if (colorfield.equals("GREEN")){
+            shift_multiplier = 1;
+        }
+
+        int work_pixel = current_pixel;
+        int result_pixel = 0;
+
+        work_pixel = work_pixel >> (8 * shift_multiplier);
+
+        if (delimiter){
+            if (work_pixel == 0x000000FF || work_pixel == 0x000000FE){
+                System.out.println("Found a pixel w/ delim at limit");
+
+                result_pixel = current_pixel - (0x00000002 << (8 * shift_multiplier));
+            }
+            else{
+                result_pixel = current_pixel + (0x00000002 << (8 * shift_multiplier));
+            }
+        }
+        else{
+            if (work_pixel == 0x000000FF){
+                result_pixel = current_pixel - (0x00000001 << (8 * shift_multiplier));
+            }
+            else{
+                result_pixel = current_pixel + (0x00000001 << (8 * shift_multiplier));
+            }
+        }
+
+        System.out.println("Converted pixel " + Integer.toHexString(current_pixel) + " to " + Integer.toHexString(result_pixel));
+        return result_pixel;
     }
 
 }

@@ -4,6 +4,7 @@ package steganographyPackage;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 
@@ -216,7 +217,7 @@ public class Controller {
     	}
     }
     
-    private void goDecrypt(){
+    private void goDecrypt() throws IOException{
     	model.goDecrypt();
     	
     	System.out.print("Mapping Function: ");

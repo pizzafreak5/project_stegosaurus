@@ -7,6 +7,7 @@ package steganographyPackage;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -15,7 +16,7 @@ import java.lang.Math.*;
 import java.util.ArrayList;
 public class Image_decoder {
 
-    public static File linear_decode(String original_filename, String secret_filename) throws IOException {
+    public static String linear_decode(String original_filename, String secret_filename) throws IOException {
 
         /*
         Description of linear decoding function:
@@ -57,11 +58,22 @@ public class Image_decoder {
         
         
         //Subtract every original pixel from encrypted image pixel to get either a 0, 1, or 2.  
-        for(int x = 0; x < image.getWidth(); x++)
-            for(int y = 0; y < image.getHeight(); y++) {
+        for(int y = 0; y < image.getWidth(); y++)
+            for(int x = 0; x < image.getHeight(); x++) {
                 color = Math.abs(image.getRGB(x, y) - secret_image.getRGB(x, y));                
                 bits.add(color);
             }
+        
+        //if difference is 1, 256, 65536 ==1
+        
+        //0 keep it
+        
+        
+        //2
+        
+        
+
+        
         
         //First 2 delimiter notes end of filename
         if (bits.contains('2')){
@@ -90,20 +102,44 @@ public class Image_decoder {
         }
         System.out.println("The fileString string = " + fileString.toString());
         
-        //Create file 
-        File output_file = null; 
-        output_file = new File(fileString.toString());
         
-        //Create file out of textFile ArrayList
-        ArrayList<Integer> textFile =  (ArrayList<Integer>) bits.subList(0, secondDelimiter - 1);
-        FileWriter writer = new FileWriter(output_file);
-        for (Integer intBit : textFile){
-        	writer.write(intBit);
+        
+        FileOutputStream outputfile = new FileOutputStream("Default_out.txt");
+        
+        //
+        int out_byte = 0;
+        int out_byte_count = 0;
+        for ( int i : rest_of_file){
+        	if (i < 2){
+        		out_byte += i;
+            	if (out_byte_count < 7){
+            		out_byte = out_byte << 1;
+            	}
+            	
+            	out_byte_count++;
+            	
+            	if(out_byte_count == 8){
+            		out_byte_count = 0;
+            		try{
+            			outputfile.write(out_byte);
+            		}
+            		catch (IOException e){
+            			System.out.println("Can't write" + e);
+            		}
+            		
+            		out_byte = 0;
+            	}
+        	}
+        	else{
+        		outputfile.write(out_byte);
+        	}
+        	
         }
-        writer.close();
+        
+        outputfile.close();
 
         
-        return output_file;
+        return "Default_out.txt";
     }
 
 }
