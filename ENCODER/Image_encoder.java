@@ -9,13 +9,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.image.ColorModel;
 import java.lang.Math.*;
-public class Image_encoder {
+public class image_encoder {
 
-    /*
+
     public static void main(String [] args){
-        linear_map("BLUE", "black_blank.png", "default_secret.txt","default_out.png");
+        linear_map("BLUE", "blank_white.png", "default_secret.txt","default_out");
     }
-    */
+
 
     public static String linear_map(String color_field, String host_filename, String secret_filename, String output_filename) {
 
@@ -103,30 +103,10 @@ public class Image_encoder {
          ColorModel color_model = image.getColorModel(); //Might not use this, but this tells us if there is an
                                                         //alpha channel
 
-        int field_number = 0;
-        int field_mask = 0x00000000;
+        String file_format = host_filename.substring(host_filename.lastIndexOf('.'));
+        String file_format_clean = file_format.substring(1);
 
 
-        //Setup the relevant color field information:
-        if (color_field.equals("RED")){
-            field_number = 2;
-            field_mask = 0x00ff0000;
-        }
-
-        else if (color_field.equals("GREEN")){
-            field_number = 1;
-            field_mask = 0x0000ff00;
-        }
-
-        else if (color_field.equals("BLUE")){
-            field_number = 0;
-            field_mask = 0x000000ff;
-        }
-
-        else{
-            //This is a bad place to be
-            return("ERROR: Invalid color field");
-        }
         //For this encoder to work, the host file must have more pixels than bits in the secret file,
         //specificaly, it must contain at least
         // (number_of_bits_in_secret + number_of_delimiters + bits_in_filename_and_other_decoder_data)
@@ -286,11 +266,13 @@ public class Image_encoder {
         //No need to advance the pixel, because now we are done
 
         try{
-            File outputfile = new File(output_filename);
-            ImageIO.write(image, "png", outputfile);
+            File outputfile = new File(output_filename + file_format);
+            ImageIO.write(image, file_format_clean, outputfile);
         } catch (IOException e) {
             System.out.println("FUCK" + e);
         }
+
+        System.out.println("Host extension: " + file_format + "   " + file_format_clean);
 
         return "Encoded Secret File Successfully";
 
@@ -333,10 +315,11 @@ public class Image_encoder {
         int result_pixel = 0;
 
         work_pixel = work_pixel >> (8 * shift_multiplier);
+        work_pixel = work_pixel & field_mask;
+        System.out.println("SHifted pix:" + Integer.toHexString(work_pixel));
 
         if (delimiter){
             if (work_pixel == 0x000000FF || work_pixel == 0x000000FE){
-                System.out.println("Found a pixel w/ delim at limit");
 
                 result_pixel = current_pixel - (0x00000002 << (8 * shift_multiplier));
             }
