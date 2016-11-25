@@ -12,9 +12,7 @@ import java.lang.Math.*;
 public class image_encoder {
 
 
-    public static void main(String [] args){
-        linear_map("BLUE", "blank_white.png", "default_secret.txt","default_out");
-    }
+    
 
 
     public static String linear_map(String color_field, String host_filename, String secret_filename, String output_filename) {
