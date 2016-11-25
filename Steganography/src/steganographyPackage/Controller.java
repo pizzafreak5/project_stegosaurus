@@ -12,6 +12,8 @@ public class Controller {
 	private Model model;
     private View view;
     
+    private String colorString;
+    
  
     public Controller(Model model, View view){
         this.model = model;
@@ -140,7 +142,7 @@ public class Controller {
 		view.goButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				goEncrypt();
+				goEncrypt(view);
 				
 			}
 		});
@@ -154,6 +156,13 @@ public class Controller {
 		 view.encryptedButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					fileToDecrypt();
+					checkIfReadyDecrypt();
+				}
+			});
+		 view.destinationDecryptButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					destinationDecryptFilePath();
 					checkIfReadyDecrypt();
 				}
 			});
@@ -184,9 +193,9 @@ public class Controller {
         
     private void checkIfReadyEncrypt(){
     	
-    	if(model.getUploadedImg() != null && 
-    			model.getImgToEncrypt() != null &&
-    			model.getDirectoryChooser() != null)
+    	if(model.getUploadFilePath() != null && 
+    			model.getSecretFilePath() != null &&
+    			model.getSelectedFilePath() != null)
     	{
     		view.goButton.setBackground(Color.GREEN);
     		view.goButton.setOpaque(true); 
@@ -196,8 +205,9 @@ public class Controller {
     }
     private void checkIfReadyDecrypt(){
     	
-    	if(model.getOriginalImg() != null && 
-    			model.getImgToDecrypt() != null)
+    	if(model.getKeyFilePath() != null && 
+    			model.getEncryptedFilePath() != null &&
+    			model.getSelectedDecryptFilePath() != null)
     	{
     		view.goDecryptButton.setBackground(Color.GREEN);
     		view.goDecryptButton.setOpaque(true); 
@@ -226,14 +236,14 @@ public class Controller {
 		}
     	view.showDecryptnComplDialog();
     }
-    private void goEncrypt() {
-		model.goEncrypt();	
+    private void goEncrypt(View view) {	// Go button -> to encrypt
+		
 		
 		//Creation of String variables to be sent in to linear_map
-		String colorString = null;
-		String host_filename = model.getUploadedImg().toString(); //********************set correctly?
-		String secret_filename = model.getImgToEncrypt().toString();
-		String output_filename = null;    //model.destinationFilePath(view); ??????
+		colorString = null;
+		//String host_filename = model.getUploadedImg().toString(); //********************set correctly?
+		//String secret_filename = model.getImgToEncrypt().toString();
+		//String output_filename = model.getSelectedFilePath();    
 		
 		System.out.print("Color Plane: ");
 		if(view.rButton.isSelected())
@@ -273,14 +283,15 @@ public class Controller {
 		}
 		
 		//Call to encryption function 
-		Image_encoder.linear_map(colorString, host_filename, secret_filename, output_filename);
+		//Image_encoder.linear_map(colorString, host_filename, secret_filename, output_filename);
 		
+		model.goEncrypt(colorString);
 		
-		view.showEncryptnComplDialog();
+		view.showEncryptnComplDialog();	
 	}
     private void uploadEncryptFile() {
     	model.goUploadEncrypt(this.view);
-    	if(model.getUploadedImg() != null)
+    	if(model.getUploadFilePath() != null)
     	{
     		view.uploadButton.setBackground(Color.GREEN);
     		view.uploadButton.setOpaque(true); 
@@ -289,10 +300,11 @@ public class Controller {
     	
     	
     }
-    private void encryptFile() {
+    private void encryptFile() {	// secret file
 		model.encryptFile(this.view);
-		if(model.getImgToEncrypt() != null)
+		if(model.getSecretFilePath() != null)
     	{
+			
     		view.encryptButton.setBackground(Color.GREEN);
     		view.encryptButton.setOpaque(true); 
     		view.encryptButton.setBorderPainted(true);
@@ -301,7 +313,7 @@ public class Controller {
 	}
     private void destinationFilePath() {
 		model.destinationFilePath(this.view);
-		if(model.getDirectoryChooser() != null)
+		if(model.getSelectedFilePath() != null)
     	{
     		view.destinationButton.setBackground(Color.GREEN);
     		view.destinationButton.setOpaque(true); 
@@ -310,7 +322,7 @@ public class Controller {
 	}
     private void keyToDecrypt() {
 		model.keyToDecrypt(this.view);
-		if(model.getOriginalImg() != null)
+		if(model.getKeyFilePath() != null)
     	{
     		view.keyButton.setBackground(Color.GREEN);
     		view.keyButton.setOpaque(true); 
@@ -320,11 +332,20 @@ public class Controller {
 	}
     private void fileToDecrypt() {
 		model.fileToDecrypt(this.view);
-		if(model.getImgToDecrypt() != null)
+		if(model.getEncryptedFilePath() != null)
     	{
     		view.encryptedButton.setBackground(Color.GREEN);
     		view.encryptedButton.setOpaque(true); 
     		view.encryptedButton.setBorderPainted(true);
+    	}
+	}
+    private void destinationDecryptFilePath() {
+		model.destinationDecryptFilePath(this.view);
+		if(model.getSelectedDecryptFilePath() != null)
+    	{
+    		view.destinationDecryptButton.setBackground(Color.GREEN);
+    		view.destinationDecryptButton.setOpaque(true); 
+    		view.destinationDecryptButton.setBorderPainted(true);
     	}
 	}
     private void nextSlide() {
@@ -369,5 +390,12 @@ public class Controller {
     		view.previousButton.setEnabled(true);
     	}
     	view.setSlideNumber(model.getSlideNumber());
+	}
+    public String getColorString() {
+		return colorString;
+	}
+
+	public void setColorString(String colorString) {
+		this.colorString = colorString;
 	}
 }

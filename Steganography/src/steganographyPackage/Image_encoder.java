@@ -15,7 +15,7 @@ public class Image_encoder {
 
 
 
-    public static String linear_map(String color_field, String host_filename, String secret_filename, String output_filename) {
+    public static String linear_map(String color_field, String host_filename, String secret_filename, String output_filepath) {
 
         /*
         Description of linear mapping function:
@@ -74,7 +74,8 @@ public class Image_encoder {
         File host_file = null;      //This is the host image file
         FileInputStream secret_file = null; //This is the secret file, and it can be any file-type.
 
-
+        System.out.println("Encoder start");
+        
         //Attempt to read file and import image
         try{
             //Open host file and read into image
@@ -104,7 +105,8 @@ public class Image_encoder {
         int field_number = 0;
         int field_mask = 0x00000000;
 
-
+        System.out.println("initialization complete");
+        
         //Setup the relevant color field information:
         if (color_field.equals("RED")){
             field_number = 2;
@@ -169,6 +171,7 @@ public class Image_encoder {
         int new_pixel = 0;
         int modify_pixel = 0;
 
+        System.out.println("czech is complete");
 
         //Encode the filename
         for(char c : secret_filename.toCharArray()){
@@ -253,7 +256,8 @@ public class Image_encoder {
                     pixel_x_counter++;
                 }
             }
-        }
+            
+        }	System.out.println("file name encoded");
 
         //Now we've written the filename to the host file.
         //Next, we need to put a special marker to denote the end of the filename.
@@ -399,6 +403,14 @@ public class Image_encoder {
         image.setRGB(pixel_x_counter,pixel_y_counter,new_pixel);
 
         //No need to advance the pixel, because now we are done
+        
+        try{
+        	File outputfile = new File(output_filepath + "encoder_result.jpg");
+        	ImageIO.write(image, "jpg", outputfile);
+        } catch (IOException e){
+        	System.out.println("FUCK" + e);
+        	return("It dun fucked up on output");
+        }
 
         return "Encoded Secret File Successfully";
 
