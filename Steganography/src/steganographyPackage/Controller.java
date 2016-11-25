@@ -12,9 +12,7 @@ public class Controller {
 	private Model model;
     private View view;
     
-    
-    
-    
+ 
     public Controller(Model model, View view){
         this.model = model;
         this.view = view;
@@ -186,7 +184,7 @@ public class Controller {
         
     private void checkIfReadyEncrypt(){
     	
-    	if(model.getUplaodedImg() != null && 
+    	if(model.getUploadedImg() != null && 
     			model.getImgToEncrypt() != null &&
     			model.getDirectoryChooser() != null)
     	{
@@ -231,18 +229,27 @@ public class Controller {
     private void goEncrypt() {
 		model.goEncrypt();	
 		
+		//Creation of String variables to be sent in to linear_map
+		String colorString = null;
+		String host_filename = model.getUploadedImg().toString(); //********************set correctly?
+		String secret_filename = model.getImgToEncrypt().toString();
+		String output_filename = null;    //model.destinationFilePath(view); ??????
+		
 		System.out.print("Color Plane: ");
 		if(view.rButton.isSelected())
 		{
 			System.out.println("Red selected");
+			colorString = "RED";
 		}
 		else if(view.gButton.isSelected())
 		{
 			System.out.println("Green selected");
+			colorString = "GREEN";
 		}
 		else if(view.bButton.isSelected())
 		{
 			System.out.println("Blue selected");
+			colorString = "BLUE";
 		}
 		else
 		{
@@ -264,11 +271,16 @@ public class Controller {
 				System.out.println("Top to Bottom selected");
 			}
 		}
+		
+		//Call to encryption function 
+		Image_encoder.linear_map(colorString, host_filename, secret_filename, output_filename);
+		
+		
 		view.showEncryptnComplDialog();
 	}
     private void uploadEncryptFile() {
     	model.goUploadEncrypt(this.view);
-    	if(model.getUplaodedImg() != null)
+    	if(model.getUploadedImg() != null)
     	{
     		view.uploadButton.setBackground(Color.GREEN);
     		view.uploadButton.setOpaque(true); 
