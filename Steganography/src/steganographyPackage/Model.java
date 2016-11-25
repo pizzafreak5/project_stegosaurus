@@ -108,6 +108,9 @@ private JFileChooser directoryChooser = null;
 		if (directoryChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 			System.out.println("getCurrentDirectory(): " + directoryChooser.getCurrentDirectory());
 			System.out.println("getSelectedFile() : " + directoryChooser.getSelectedFile());
+			
+			String selectedFile = directoryChooser.getSelectedFile().toString();
+			System.out.println(selectedFile);
 		} else {
 			System.out.println("No Selection ");
 			directoryChooser = null;
