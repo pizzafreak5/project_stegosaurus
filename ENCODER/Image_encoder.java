@@ -12,6 +12,8 @@ import java.lang.Math.*;
 public class Image_encoder {
 
 
+    
+
 
     public static String linear_map(String color_field, String host_filename, String secret_filename, String output_filename) {
 
@@ -101,6 +103,15 @@ public class Image_encoder {
 
         String file_format = host_filename.substring(host_filename.lastIndexOf('.'));
         String file_format_clean = file_format.substring(1);
+        String short_secret_filename = secret_filename;
+
+
+        if (secret_filename.contains("/")){
+            short_secret_filename = secret_filename.substring(secret_filename.lastIndexOf('/') + 1);
+        }
+
+
+        System.out.println("short_secret_filename: " + short_secret_filename);
 
 
         //For this encoder to work, the host file must have more pixels than bits in the secret file,
@@ -312,7 +323,7 @@ public class Image_encoder {
 
         work_pixel = work_pixel >> (8 * shift_multiplier);
         work_pixel = work_pixel & field_mask;
-        
+
 
         if (delimiter){
             if (work_pixel == 0x000000FF || work_pixel == 0x000000FE){
