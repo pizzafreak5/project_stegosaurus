@@ -170,7 +170,12 @@ public class Controller {
 		view.goDecryptButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				goDecrypt();				
+				try {
+					goDecrypt();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
 			}
 		});
 		

@@ -283,7 +283,7 @@ public class Image_encoder {
         //No need to advance the pixel, because now we are done
 
         try{
-            File outputfile = new File(output_filename);
+            File outputfile = new File("default_output.png");
             ImageIO.write(image, "png", outputfile);
         } catch (IOException e) {
             System.out.println("FUCK" + e);

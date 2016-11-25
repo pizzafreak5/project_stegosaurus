@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.ColorModel;
 import java.lang.Math.*;
 import java.util.ArrayList;
+import java.util.List;
 public class Image_decoder {
 
     public static String linear_decode(String original_filename, String secret_filename) throws IOException {
@@ -64,7 +65,7 @@ public class Image_decoder {
                 bits.add(color);
             }
         
-        //if difference is 1, 256, 65536 ==1
+        //if difference is 1, 256, 65536 == 1
         
         //0 keep it
         
@@ -72,29 +73,23 @@ public class Image_decoder {
         //2
         
         
-
-        
         
         //First 2 delimiter notes end of filename
-        if (bits.contains('2')){
-        	firstDelimiter = bits.indexOf('2');
+        if (bits.contains(2)){
+        	firstDelimiter = bits.indexOf(2);
+        	secondDelimiter = bits.lastIndexOf(2);
         }
         else{
-        	System.out.println("Error: No filename found in encrypted file...");
+        	System.out.println("Error: No filename delimiter found in encrypted file...");
         }
         
-        //break up into 2 arraylists, filename, and rest of bits.
-        ArrayList<Integer> decoded_filename = (ArrayList<Integer>) bits.subList(0, firstDelimiter - 1);
-        ArrayList<Integer> rest_of_file = (ArrayList<Integer>) bits.subList(firstDelimiter + 1, bits.size());
+        System.out.println("first is " + firstDelimiter);
+        System.out.println("bits.size() is " + bits.size());
+        System.out.println("second is " + secondDelimiter);
 
-        //Second 2 delimiter notes the end of the encrypted file
-        if (rest_of_file.contains('2')){
-        	secondDelimiter = bits.indexOf('2');
-        }
-        else{
-        	System.out.println("Error: No end point found in encrypted file...");
-        }
-        
+        //break up into 2 lists, filename, and rest of bits.
+        List<Integer> decoded_filename = bits.subList(0, firstDelimiter);
+
         //Create string out of decoded_filename
         StringBuilder fileString = new StringBuilder();
         for (Integer number : decoded_filename) {
@@ -103,13 +98,26 @@ public class Image_decoder {
         System.out.println("The fileString string = " + fileString.toString());
         
         
+        //break up into last arraylist which is the secret message
+        List<Integer> secret_message = bits.subList(firstDelimiter + 1, secondDelimiter );
+
+        
+        //Create string out of decoded_filename
+        StringBuilder messageString = new StringBuilder();
+        for (Integer number : secret_message) {
+        	messageString.append(number != null ? number.toString() : "");
+        }
+        System.out.println("The messageString string = " + messageString.toString());
+        
+        
+        
         
         FileOutputStream outputfile = new FileOutputStream("Default_out.txt");
         
         //
         int out_byte = 0;
         int out_byte_count = 0;
-        for ( int i : rest_of_file){
+        for ( int i : secret_message){
         	if (i < 2){
         		out_byte += i;
             	if (out_byte_count < 7){
