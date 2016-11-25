@@ -93,6 +93,11 @@ public class View {
 	
     private JPanel encryptedPanel;
     public JButton encryptedButton;
+    
+    private JPanel destinationDecryptPanel;
+    public JButton destinationDecryptButton;
+    
+    private JPanel decryptPanel;
 	
     private JPanel goDecryptButtonPanel;
     public JButton goDecryptButton;
@@ -195,7 +200,9 @@ public class View {
 		lineButton = new JRadioButton("Linear");
 		lineButton.setSelected(true);
 		hashButton = new JRadioButton("Hash");
+		hashButton.setEnabled(false);
 		ttbButton = new JRadioButton("Top to Bottom");
+		ttbButton.setEnabled(false);
 		
 		mapPanel = new JPanel();
 		TitledBorder maptitle = BorderFactory.createTitledBorder("Mapping Function");
@@ -255,7 +262,9 @@ public class View {
 		lineDecryptButton = new JRadioButton("Linear");
 		lineDecryptButton.setSelected(true);
 		hashDecryptButton = new JRadioButton("Hash");
+		hashDecryptButton.setEnabled(false);
 		ttbDecryptButton = new JRadioButton("Top to Bottom");
+		ttbDecryptButton.setEnabled(false);
 
 		mapDecryptIcon = new ImageIcon();
 		mapDecryptIcon.setImage(mapLinearImg);
@@ -288,6 +297,22 @@ public class View {
 		TitledBorder encryptedTitle = BorderFactory.createTitledBorder("Encrypted File");
 		encryptedPanel.setBorder(encryptedTitle);
 		encryptedPanel.add(encryptedButton);
+		
+		destinationDecryptButton = new JButton("Destination");
+		destinationDecryptButton.setBackground(Color.RED);
+		destinationDecryptButton.setOpaque(true); 
+		destinationDecryptButton.setBorderPainted(true);
+		destinationDecryptPanel = new JPanel();
+		TitledBorder destinationDecryptTitle = BorderFactory.createTitledBorder("Decrypted File");
+		destinationDecryptPanel.setBorder(destinationDecryptTitle);
+		destinationDecryptPanel.add(destinationDecryptButton);
+	
+		
+		decryptPanel = new JPanel();
+		decryptPanel.add(keyPanel);
+		decryptPanel.add(encryptedPanel);
+		decryptPanel.add(destinationDecryptPanel);
+		
 		
 		goDecryptButtonPanel = new JPanel();
 		goDecryptButton = new JButton("Go");
@@ -363,8 +388,7 @@ public class View {
 		page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
 
 		page3.add(mapDecryptPanel);
-		page3.add(keyPanel);
-		page3.add(encryptedPanel);
+		page3.add(decryptPanel);
 		page3.add(goDecryptButtonPanel);
 		
 		dPicturePanel = new JPanel();

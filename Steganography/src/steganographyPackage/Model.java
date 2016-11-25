@@ -12,6 +12,8 @@ import javax.swing.JFileChooser;
 
 import javax.swing.JLabel;
 
+
+
 public class Model {
 
 private int x;
@@ -22,9 +24,17 @@ private BufferedImage imgToDecrypt = null;
 
 private JFileChooser fileChooser = new JFileChooser();
 private JFileChooser directoryChooser = null;
+private String uploadFilePath;
+private String secretFilePath;
+private String selectedFilePath;
+
+private String keyFilePath;
+private String encryptedFilePath;
+private String selectedDecryptFilePath;
     
     public Model(){
         x = 0;
+        
     }
     
     public Model(int x){
@@ -37,10 +47,10 @@ private JFileChooser directoryChooser = null;
 	
 	}
 
-	public void goEncrypt() {
+	public void goEncrypt(String colorString) {
 		System.out.println("Application launch");
-		
-		
+		String temp_string = Image_encoder.linear_map(colorString, uploadFilePath, secretFilePath, selectedFilePath);
+		System.out.println("temp_string/encloder result: "+ temp_string);
 	}
 
 	public void goUploadEncrypt(View view) {
@@ -56,7 +66,9 @@ private JFileChooser directoryChooser = null;
 				// This is where a real application would open the file.
 				System.out.println("Opening: " + file.getName() + ".");
 				
+				uploadFilePath = file.getAbsolutePath();
 				
+				/*
 				System.out.println("Reading image from disk. ");
 		        try {
 		        	
@@ -65,13 +77,15 @@ private JFileChooser directoryChooser = null;
 				} catch (IOException e1) {
 					System.out.println("Exception: " + e1.getMessage());
 				}
+				*/
 			} else {
 				System.out.println("Open command cancelled by user.");
 			}
 		
 		
 	}
-	public void encryptFile(View view) {
+	public void encryptFile(View view) 	// Secret file
+	{
 		System.out.println("Encrypt picture was pressed");
 		
 		
@@ -84,6 +98,11 @@ private JFileChooser directoryChooser = null;
 				System.out.println("Opening: " + file.getName() + ".");
 				
 				
+				secretFilePath = file.getAbsolutePath();
+				
+				
+				
+				/*
 				System.out.println("Reading image from disk. ");
 		        try {
 		        	
@@ -92,13 +111,14 @@ private JFileChooser directoryChooser = null;
 				} catch (IOException e1) {
 					System.out.println("Exception: " + e1.getMessage());
 				}
+				*/
 			} else {
 				System.out.println("Open command cancelled by user.");
 			}
-		
+				 
 	}
 	public void destinationFilePath(View view) {
-		// TODO Auto-generated method stub
+		
 		directoryChooser = new JFileChooser();
 		directoryChooser.setCurrentDirectory(new java.io.File("."));
 		directoryChooser.setDialogTitle("choosertitle");
@@ -108,6 +128,12 @@ private JFileChooser directoryChooser = null;
 		if (directoryChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 			System.out.println("getCurrentDirectory(): " + directoryChooser.getCurrentDirectory());
 			System.out.println("getSelectedFile() : " + directoryChooser.getSelectedFile());
+			
+			String temp_path = directoryChooser.getCurrentDirectory().getAbsolutePath();
+			//temp_path = temp_path.substring(0, temp_path.length() - 1);
+			this.selectedFilePath = temp_path.trim() + "/";
+			
+			System.out.println(selectedFilePath);
 		} else {
 			System.out.println("No Selection ");
 			directoryChooser = null;
@@ -121,7 +147,7 @@ private JFileChooser directoryChooser = null;
 		System.out.println("Key picture was pressed");
 		
 		
-		int returnVal = fileChooser.showOpenDialog(view.keyButton);
+		int returnVal = fileChooser.showOpenDialog(view.encryptButton);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
@@ -130,14 +156,8 @@ private JFileChooser directoryChooser = null;
 			System.out.println("Opening: " + file.getName() + ".");
 			
 			
-			System.out.println("Reading image from disk. ");
-	        try {
-	        	
-	        	originalImg = ImageIO.read(new File(file.getAbsolutePath()));
-				
-			} catch (IOException e1) {
-				System.out.println("Exception: " + e1.getMessage());
-			}
+			setKeyFilePath(file.getAbsolutePath());
+			
 		} else {
 			System.out.println("Open command cancelled by user.");
 		}
@@ -147,8 +167,10 @@ private JFileChooser directoryChooser = null;
 	public void fileToDecrypt(View view) {
 		System.out.println("Encrypted picture was pressed");
 		
+	
 		
-		int returnVal = fileChooser.showOpenDialog(view.encryptedButton);
+		
+		int returnVal = fileChooser.showOpenDialog(view.encryptButton);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
@@ -157,17 +179,41 @@ private JFileChooser directoryChooser = null;
 			System.out.println("Opening: " + file.getName() + ".");
 			
 			
-			System.out.println("Reading image from disk. ");
-	        try {
-	        	
-	        	imgToDecrypt = ImageIO.read(new File(file.getAbsolutePath()));
-				
-			} catch (IOException e1) {
-				System.out.println("Exception: " + e1.getMessage());
-			}
+			setEncryptedFilePath(file.getAbsolutePath());
+			
+			
+		
+			
 		} else {
 			System.out.println("Open command cancelled by user.");
 		}
+		
+	}
+	public void destinationDecryptFilePath(View view) {
+
+		directoryChooser = new JFileChooser();
+		directoryChooser.setCurrentDirectory(new java.io.File("."));
+		directoryChooser.setDialogTitle("choosertitle");
+		directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		directoryChooser.setAcceptAllFileFilterUsed(false);
+
+		if (directoryChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			System.out.println("getCurrentDirectory(): " + directoryChooser.getCurrentDirectory());
+			System.out.println("getSelectedFile() : " + directoryChooser.getSelectedFile());
+			
+			String temp_path = directoryChooser.getCurrentDirectory().getAbsolutePath();
+			//temp_path = temp_path.substring(0, temp_path.length() - 1);
+			this.selectedDecryptFilePath = temp_path.trim() + "/";
+			
+			System.out.println(selectedDecryptFilePath);
+		} else {
+			System.out.println("No Selection ");
+			directoryChooser = null;
+			view.destinationDecryptButton.setBackground(Color.RED);
+			view.destinationDecryptButton.setOpaque(true); 
+			view.destinationDecryptButton.setBorderPainted(true);
+		}
+
 		
 	}
 	public BufferedImage getUploadedImg()
@@ -204,6 +250,51 @@ private JFileChooser directoryChooser = null;
 	public int getSlideNumber() {
 		
 		return this.x;
+	}
+
+	public String getSelectedFilePath() {
+		return selectedFilePath;
+	}
+
+	public void setSelectedFilePath(String selectedFilePath) {
+		this.selectedFilePath = selectedFilePath;
+	}
+
+	public String getSecretFilePath() {
+		return secretFilePath;
+	}
+
+	public void setSecretFilePath(String secretFilePath) {
+		this.secretFilePath = secretFilePath;
+	}
+
+	public String getUploadFilePath() {
+		return uploadFilePath;
+	}
+
+	public void setUploadFilePath(String uploadFilePath) {
+		this.uploadFilePath = uploadFilePath;
+	}
+	
+
+	public String getKeyFilePath() {
+		return keyFilePath;
+	}
+
+	public void setKeyFilePath(String keyFilePath) {
+		this.keyFilePath = keyFilePath;
+	}
+
+	public String getEncryptedFilePath() {
+		return encryptedFilePath;
+	}
+
+	public void setEncryptedFilePath(String encryptedFilePath) {
+		this.encryptedFilePath = encryptedFilePath;
+	}
+	public String getSelectedDecryptFilePath()
+	{
+		return selectedDecryptFilePath;
 	}
 	
 
