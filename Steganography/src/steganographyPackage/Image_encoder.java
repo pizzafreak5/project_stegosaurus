@@ -2,6 +2,8 @@
  * Created by Garrett on 10/18/2016.
  */
 
+package steganographyPackage;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -216,6 +218,9 @@ public class Image_encoder {
                 //When the input byte is read, it is stored in the last byte of the integer input_byte
                 //Because it reads a byte at a time, we have check every read 8 times to check
                 //the bits individualy
+            	
+            	System.out.println("Encoding byte: " + Integer.toBinaryString(input_byte));
+            	
                 for (int i = 0; i < 8; i++){
                     temporary_byte = input_byte;
 
