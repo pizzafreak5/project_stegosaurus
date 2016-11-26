@@ -14,7 +14,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.ColorModel;
 import java.lang.Math.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 public class Image_decoder {
 
@@ -53,33 +52,27 @@ public class Image_decoder {
 
 
         //Creation of variables
-        int color = 0;
+        int color;
         int firstDelimiter = 0;
         int secondDelimiter = 0;
         ArrayList<Integer> bits = new ArrayList<>();
-        int colorCounter = 0;
+        
         
         //Subtract every original pixel from encrypted image pixel to get either a 0, 1, or 2.  
         for(int y = 0; y < image.getWidth(); y++)
             for(int x = 0; x < image.getHeight(); x++) {
-                color = Math.abs(image.getRGB(x, y) - secret_image.getRGB(x, y));    
-
+                color = Math.abs(image.getRGB(x, y) - secret_image.getRGB(x, y));                
                 bits.add(color);
-                colorCounter++;
-                if (colorCounter >= 800){
-                	break;
-                }
             }
         
+        //if difference is 1, 256, 65536 == 1
         
-        	Collections.replaceAll(bits, 512, 2);
-        	Collections.replaceAll(bits, 131072, 2);
-        	Collections.replaceAll(bits, 256, 1);
-        	Collections.replaceAll(bits, 65536, 1);
-
+        //0 keep it
         
-        System.out.println(bits);
-      
+        
+        //2
+        
+        
         
         //First 2 delimiter notes end of filename
         if (bits.contains(2)){

@@ -69,15 +69,30 @@ public class Image_decoder {
                 if (colorCounter >= 800){
                 	break;
                 }
+                //System.out.println(color);
             }
         
         
+
+//        //if difference is 1, 256, 65536 == 1
+//        if (bits.contains(256) || bits.contains(65536)){
+//        	System.out.println("GOT INTO 256");
+//        	Collections.replaceAll(bits, 256, 1);
+//        	Collections.replaceAll(bits,  665536, 1);
+//        }
+        	
+//        //2
+//        //if difference is 2, 512, 65536 == 1
+//        if (bits.contains(512) || bits.contains(131072)){
+//        	System.out.println("GOT INTO 512");
         	Collections.replaceAll(bits, 512, 2);
         	Collections.replaceAll(bits, 131072, 2);
         	Collections.replaceAll(bits, 256, 1);
         	Collections.replaceAll(bits, 65536, 1);
-
+//        }
+        	
         
+
         System.out.println(bits);
       
         

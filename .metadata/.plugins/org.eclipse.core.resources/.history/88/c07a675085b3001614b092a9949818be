@@ -69,6 +69,7 @@ public class Image_decoder {
                 if (colorCounter >= 800){
                 	break;
                 }
+                //System.out.println(color);
             }
         
         
