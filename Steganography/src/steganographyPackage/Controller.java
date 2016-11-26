@@ -245,11 +245,8 @@ public class Controller {
     private void goEncrypt(View view) {	// Go button -> to encrypt
 		
 		
-		//Creation of String variables to be sent in to linear_map
-		colorString = null;
-		//String host_filename = model.getUploadedImg().toString(); //********************set correctly?
-		//String secret_filename = model.getImgToEncrypt().toString();
-		//String output_filename = model.getSelectedFilePath();    
+		//Creation of colorString to be sent in to linear_map
+		colorString = null; 
 		
 		System.out.print("Color Plane: ");
 		if(view.rButton.isSelected())
@@ -289,8 +286,6 @@ public class Controller {
 		}
 		
 		//Call to encryption function 
-		//Image_encoder.linear_map(colorString, host_filename, secret_filename, output_filename);
-		
 		model.goEncrypt(colorString);
 		
 		view.showEncryptnComplDialog();	

@@ -57,7 +57,6 @@ public class Image_decoder {
         int firstDelimiter = 0;
         int secondDelimiter = 0;
         ArrayList<Integer> bits = new ArrayList<>();
-        int colorCounter = 0;
         
         //Subtract every original pixel from encrypted image pixel to get either a 0, 1, or 2.  
         for(int y = 0; y < image.getWidth(); y++)
@@ -65,22 +64,15 @@ public class Image_decoder {
                 color = Math.abs(image.getRGB(x, y) - secret_image.getRGB(x, y));    
 
                 bits.add(color);
-                colorCounter++;
-                if (colorCounter >= 800){
-                	break;
-                }
             }
         
-        
-        	Collections.replaceAll(bits, 512, 2);
-        	Collections.replaceAll(bits, 131072, 2);
-        	Collections.replaceAll(bits, 256, 1);
-        	Collections.replaceAll(bits, 65536, 1);
+        //Different color fields will either make a 0, 1, 2, 256, 512, 65536, or 131072
+        //which we need to convert back to 1 or a 2 for proper delimiting/binary
+        Collections.replaceAll(bits, 512, 2);
+        Collections.replaceAll(bits, 131072, 2);
+        Collections.replaceAll(bits, 256, 1);
+        Collections.replaceAll(bits, 65536, 1);
 
-        
-        System.out.println(bits);
-      
-        
         //First 2 delimiter notes end of filename
         if (bits.contains(2)){
         	firstDelimiter = bits.indexOf(2);
@@ -105,36 +97,61 @@ public class Image_decoder {
         System.out.println("The fileString string = " + fileString.toString());
         
         
-        //break up into last arraylist which is the secret message
-        List<Integer> secret_message = bits.subList(firstDelimiter + 1, secondDelimiter );
-
+        //break up into last List, which is now the secret message
+        List<Integer> secret_message = bits.subList(firstDelimiter + 1 , secondDelimiter);
         
-        //Create string out of decoded_filename
+      //Create string out of decoded_filename
         StringBuilder messageString = new StringBuilder();
         for (Integer number : secret_message) {
         	messageString.append(number != null ? number.toString() : "");
         }
         System.out.println("The messageString string = " + messageString.toString());
+        System.out.println("The messageString length = " + messageString.length());
         
         
+        String finalString = new String();
         
+        for (int i = 0 ;  i < messageString.length() - 6 ; i++){
+        	String tempString = messageString.substring(i, i+8);
+        	String reversedString = new StringBuilder(tempString).reverse().toString();
+            System.out.println("reversedString = " + reversedString);
+        	finalString += reversedString;
+        	i += 7;
+        }
         
+        System.out.println("finalString = " + finalString + " finalString Length = " + finalString.length());
+        
+        ArrayList<Integer> finalList = new ArrayList<Integer>();
+        
+        //Create finalString back into a List<Integer>
+        for (int i = 0; i < finalString.length(); i++) {
+            try {
+            	//System.out.println("finalSUBString = " + finalString.substring(i,  i+1));
+            	int j = Integer.parseInt(finalString.substring(i,  i+1), 10);
+            	//System.out.println("j = " + j);
+                finalList.add(j);
+            } catch (NumberFormatException nfe) {
+                System.out.println("Error in parsing int");
+            };
+        }
+        
+        //Creation of the output file
         FileOutputStream outputfile = new FileOutputStream("Default_out.txt");
         
-        //
+        //only sending the last of the 8 bits that is in an integer byte
         int out_byte = 0;
         int out_byte_count = 0;
-        for ( int i : secret_message){
+        for (int i : finalList){
         	if (i < 2){
         		out_byte += i;
             	if (out_byte_count < 7){
-            		out_byte = out_byte << 1;
+            		out_byte = out_byte << 1; 
             	}
             	
             	out_byte_count++;
             	
             	if(out_byte_count == 8){
-            		out_byte_count = 0;
+            		out_byte_count = 0; 
             		try{
             			outputfile.write(out_byte);
             		}
@@ -148,13 +165,9 @@ public class Image_decoder {
         	else{
         		outputfile.write(out_byte);
         	}
-        	
         }
-        
         outputfile.close();
-
         
-        return "Default_out.txt";
+        return "Decoded Secret File Successfully";
     }
-
 }
