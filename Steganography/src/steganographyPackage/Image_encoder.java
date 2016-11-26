@@ -281,10 +281,11 @@ public class Image_encoder {
         Random rng = new Random();
         
         try{
-            File outputfile = new File(output_filename + "encoded_image_" + Integer.toString(rng.nextInt() % 10000) + file_format);
+        	System.out.println("Writing to path: " + output_filename);
+            File outputfile = new File(output_filename + "encoded_image_" + Integer.toString(Math.abs(rng.nextInt() % 10000)) + file_format);
             ImageIO.write(image, file_format_clean, outputfile);
         } catch (IOException e) {
-            System.out.println("FUCK" + e);
+            System.out.println("Blew up when writing file:" + e);
         }
 
         System.out.println("Host extension: " + file_format + "   " + file_format_clean);

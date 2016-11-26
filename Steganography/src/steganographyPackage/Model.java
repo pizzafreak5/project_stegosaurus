@@ -130,9 +130,18 @@ private String selectedDecryptFilePath;
 			System.out.println("getCurrentDirectory(): " + directoryChooser.getCurrentDirectory());
 			System.out.println("getSelectedFile() : " + directoryChooser.getSelectedFile());
 			
-			String temp_path = directoryChooser.getCurrentDirectory().getAbsolutePath();
+			String temp_path = directoryChooser.getSelectedFile().getPath();
 			//temp_path = temp_path.substring(0, temp_path.length() - 1);
-			this.selectedFilePath = temp_path.trim() + "/";
+			
+			//Windows y u have to be different?
+			if (temp_path.contains("\\")){
+				this.selectedFilePath = temp_path.trim() + "\\";
+			}
+			else{
+				this.selectedFilePath = temp_path.trim() + "/";
+			}
+			
+			
 			
 			System.out.println(selectedFilePath);
 		} else {
