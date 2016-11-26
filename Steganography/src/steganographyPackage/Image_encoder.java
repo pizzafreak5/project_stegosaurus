@@ -3,7 +3,6 @@
  */
 package steganographyPackage;
 
-package steganographyPackage;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,6 +11,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.image.ColorModel;
 import java.lang.Math.*;
+import java.util.Random;
+
 public class Image_encoder {
 
 
@@ -68,7 +69,7 @@ public class Image_encoder {
                                     // the modified image.
         File host_file = null;      //This is the host image file
         FileInputStream secret_file = null; //This is the secret file, and it can be any file-type.
-
+        
 
         //Attempt to read file and import image
         try{
@@ -103,6 +104,10 @@ public class Image_encoder {
 
         if (secret_filename.contains("/")){
             short_secret_filename = secret_filename.substring(secret_filename.lastIndexOf('/') + 1);
+        }
+        
+        if (secret_filename.contains("\\")){
+            short_secret_filename = secret_filename.substring(secret_filename.lastIndexOf('\\') + 1);
         }
 
 
@@ -155,7 +160,7 @@ public class Image_encoder {
 
 
         //Encode the filename
-        for(char c : secret_filename.toCharArray()){
+        for(char c : short_secret_filename.toCharArray()){
             //this for loop moves through every bit in the char c and encodes it into
             //the image
             for (int i = 0; i < 16; i++){
@@ -269,9 +274,14 @@ public class Image_encoder {
         System.out.println("Second delimiter at " + pixel_x_counter + " , " + pixel_y_counter);
 
         //No need to advance the pixel, because now we are done
-
+        
+        
+        //Output the image to a new file
+        
+        Random rng = new Random();
+        
         try{
-            File outputfile = new File(output_filename + file_format);
+            File outputfile = new File(output_filename + "encoded_image_" + Integer.toString(rng.nextInt() % 10000) + file_format);
             ImageIO.write(image, file_format_clean, outputfile);
         } catch (IOException e) {
             System.out.println("FUCK" + e);
