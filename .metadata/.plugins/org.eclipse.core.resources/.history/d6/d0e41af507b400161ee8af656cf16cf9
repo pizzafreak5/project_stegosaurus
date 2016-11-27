@@ -23,31 +23,7 @@ public class Image_decoder {
         /*
         Description of linear decoding function:
         
-        The linear_decode function takes in the original host filename and the 
-        encoded filename and opens up the files. 
-        
-        It finds the difference of each pixel from the two given in images and 
-        saves that int to the ArrayList<Integer> named bits.
-        
-        If the picture was encoded in different fields the ints will be as follows:
-        BLUE field: 0, 1, 2
-        GREEN field: 0, 256, 512
-        RED field: 0, 65536, 131072
-        
-        So, we replace any of these instances of other numbers with their respective 1 or 2. 
-        
-        The bits array should have 2 delimiters separating the filename and the secret text. 
-        i.e. filename in bits, 2, secret text in bits, 2
-        So, after finding the two delimiters we need to reverse all the bytes and put them 
-        back into an ArrayList<Integer> to be used next. (The bytes are in the correct 
-        order, however each byte itself is 'turned around')
-        
-        Lastly, we need to create the output file using an output using a FileOutputStream.
-        Since we only use the last bit in the integer (either 00000000 or 00000001) we
-        use the << bitwise shift operator to only have that last bit and write
-        it to the file. 
-        
-        Close the file and if the program got this far everything was done successfully.
+
          */
 
         BufferedImage image = null; //This is initially set to the original image

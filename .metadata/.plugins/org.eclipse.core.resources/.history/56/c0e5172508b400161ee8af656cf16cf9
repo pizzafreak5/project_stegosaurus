@@ -43,11 +43,9 @@ public class Image_decoder {
         order, however each byte itself is 'turned around')
         
         Lastly, we need to create the output file using an output using a FileOutputStream.
-        Since we only use the last bit in the integer (either 00000000 or 00000001) we
-        use the << bitwise shift operator to only have that last bit and write
-        it to the file. 
         
-        Close the file and if the program got this far everything was done successfully.
+        
+
          */
 
         BufferedImage image = null; //This is initially set to the original image
