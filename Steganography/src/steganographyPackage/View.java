@@ -112,6 +112,9 @@ public class View {
     public BufferedImage slide1;
     public BufferedImage slide2;
     public BufferedImage slide3;
+    public BufferedImage slide4;
+    public BufferedImage slide5;
+    public BufferedImage slide6;
     public BufferedImage slideArray[];
 
     
@@ -121,7 +124,7 @@ public class View {
     	frame = new JFrame("Steganography Instructional Tool");                                   
         frame.getContentPane().setLayout(new BorderLayout());                                          
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);           
-        frame.setSize(500,350);        
+        frame.setSize(525,420);        
         frame.setVisible(true);
         
 ///////////// Page 1 - About ///////////////        
@@ -331,11 +334,15 @@ public class View {
 		slideShowPanel = new JPanel();
 		slideShowIcon = new ImageIcon();
 		try {
-			slide0 = ImageIO.read(new File("src/slide0.png"));
-			slide1 = ImageIO.read(new File("src/slide1.png"));
-			slide2 = ImageIO.read(new File("src/slide2.png"));
-			slide3 = ImageIO.read(new File("src/slide3.png"));
-			slideArray = new BufferedImage[]{slide0, slide1, slide2, slide3};
+			slide0 = ImageIO.read(new File("src/tutorialSlide_0 small.png"));
+			slide1 = ImageIO.read(new File("src/tutorialSlide_1 small.png"));
+			slide2 = ImageIO.read(new File("src/tutorialSlide_2 small.png"));
+			slide3 = ImageIO.read(new File("src/tutorialSlide_3 small.png"));
+			slide4 = ImageIO.read(new File("src/tutorialSlide_4 small.png"));
+			slide5 = ImageIO.read(new File("src/tutorialSlide_5 small.png"));
+			slide6 = ImageIO.read(new File("src/tutorialSlide_6 small.png"));
+			
+			slideArray = new BufferedImage[]{slide0, slide1, slide2, slide3, slide4, slide5, slide6};
 		
 		
 		 	slideShowIcon.setImage(slide0);
