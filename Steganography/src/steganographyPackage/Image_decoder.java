@@ -82,13 +82,19 @@ public class Image_decoder {
         int secondDelimiter = 0;
         ArrayList<Integer> bits = new ArrayList<>();
         
+        //System.out.println("1w/h: " + image.getWidth() + "/" + image.getHeight());
+        //System.out.println("2w/h: " + secret_image.getWidth() + "/" + secret_image.getHeight());
+        
         //Subtract every original pixel from encrypted image pixel to get either a 0, 1, or 2.  
-        for(int y = 0; y < image.getWidth(); y++)
-            for(int x = 0; x < image.getHeight(); x++) {
+        for(int y = 0; y < image.getHeight(); y++)
+            for(int x = 0; x < image.getWidth(); x++) {
                 color = Math.abs(image.getRGB(x, y) - secret_image.getRGB(x, y));    
 
+                
                 bits.add(color);
             }
+        
+        
         
         //Different color fields will either make a 0, 1, 2, 256, 512, 65536, or 131072
         //which we need to convert back to 1 or a 2 for proper delimiting/binary
@@ -190,7 +196,10 @@ public class Image_decoder {
         		outputfile.write(out_byte);
         	}
         }
+        
+        
         outputfile.close();
+        
         
         return "Decoded Secret File Successfully";
     }
