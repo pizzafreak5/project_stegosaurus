@@ -166,7 +166,7 @@ public class View {
 		uploadButton.setBackground(Color.RED);
     	uploadButton.setOpaque(true); 
     	uploadButton.setBorderPainted(true);
-		encryptButton = new JButton("Encrypt");
+		encryptButton = new JButton("Encode");
 		encryptButton.setBackground(Color.RED);
 		encryptButton.setOpaque(true); 
 		encryptButton.setBorderPainted(true);
@@ -224,7 +224,7 @@ public class View {
 		    mapEncryptLabel = new JLabel();
 		    mapEncryptLabel.setIcon(mapEncryptIcon);
 		} catch (IOException e) {
-			System.out.println("Can't paint the encrypt map");
+			System.out.println("Can't paint the encode map");
 		}
 		
 		mapPanel.add(lineButton);
@@ -243,7 +243,7 @@ public class View {
 		encryptPanel.add(encryptButton);
 		
 		destinationPanel = new JPanel();
-		TitledBorder destinationTitle = BorderFactory.createTitledBorder("Encrypted File");
+		TitledBorder destinationTitle = BorderFactory.createTitledBorder("Encoded File");
 		destinationPanel.setBorder(destinationTitle);
 		destinationPanel.add(destinationButton);
 		
@@ -296,11 +296,11 @@ public class View {
 		keyPanel.add(keyButton);
 		
 		encryptedPanel = new JPanel();
-		encryptedButton = new JButton("Encypted Image");
+		encryptedButton = new JButton("Encoded Image");
 		encryptedButton.setBackground(Color.RED);
 		encryptedButton.setOpaque(true); 
 		encryptedButton.setBorderPainted(true);
-		TitledBorder encryptedTitle = BorderFactory.createTitledBorder("Encrypted File");
+		TitledBorder encryptedTitle = BorderFactory.createTitledBorder("Encoded File");
 		encryptedPanel.setBorder(encryptedTitle);
 		encryptedPanel.add(encryptedButton);
 		
@@ -309,7 +309,7 @@ public class View {
 		destinationDecryptButton.setOpaque(true); 
 		destinationDecryptButton.setBorderPainted(true);
 		destinationDecryptPanel = new JPanel();
-		TitledBorder destinationDecryptTitle = BorderFactory.createTitledBorder("Decrypted File");
+		TitledBorder destinationDecryptTitle = BorderFactory.createTitledBorder("Decoded File");
 		destinationDecryptPanel.setBorder(destinationDecryptTitle);
 		destinationDecryptPanel.add(destinationDecryptButton);
 	
@@ -354,7 +354,7 @@ public class View {
 
 		    
 		} catch (IOException e) {
-			System.out.println("Can't paint the encrypt map");
+			System.out.println("Can't paint the encode map");
 		}
 		
 		slideShowPanel.add(slideShowLabel, BorderLayout.CENTER);
@@ -380,8 +380,8 @@ public class View {
 		page3 = makeTextPanel("Page 3");
 		page4 = makeTextPanel("Page 4");
 		
-		tabbedPane.addTab("Encrypt", page2);
-		tabbedPane.addTab("Decrypt", page3);
+		tabbedPane.addTab("Encode", page2);
+		tabbedPane.addTab("Decode", page3);
 		tabbedPane.addTab("Tutorial", page4);
 		tabbedPane.addTab("About",page1);
 		
@@ -499,7 +499,7 @@ public class View {
     	
     	// Custom title, custom icon
     	JOptionPane.showMessageDialog(frame,
-    	    "Encryption Complete",
+    	    "Encoding Complete",
     	    "Steganography Instructional Tool",
     	    JOptionPane.INFORMATION_MESSAGE,
     	    dinoIcon);
@@ -510,7 +510,7 @@ public class View {
     	
     	// Custom title, custom icon
     	JOptionPane.showMessageDialog(frame,
-    	    "Decryption Complete",
+    	    "Decoding Complete",
     	    "Steganography Instructional Tool",
     	    JOptionPane.INFORMATION_MESSAGE,
     	    dinoIcon);
