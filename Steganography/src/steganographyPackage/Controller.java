@@ -225,19 +225,19 @@ public class Controller {
     private void goDecrypt() throws IOException{
     	model.goDecrypt();
     	
-    	System.out.print("Mapping Function: ");
+    	//System.out.print("Mapping Function: ");
 		{
 			if(view.lineDecryptButton.isSelected())
 			{
-				System.out.println("Linear selected");
+				//System.out.println("Linear selected");
 			}
 			else if(view.hashDecryptButton.isSelected())
 			{
-				System.out.println("Hash selected");
+				//System.out.println("Hash selected");
 			}
 			else if(view.ttbDecryptButton.isSelected())
 			{
-				System.out.println("Top to Bottom selected");
+				//System.out.println("Top to Bottom selected");
 			}
 		}
     	view.showDecryptnComplDialog();
@@ -248,40 +248,40 @@ public class Controller {
 		//Creation of colorString to be sent in to linear_map
 		colorString = null; 
 		
-		System.out.print("Color Plane: ");
+		//System.out.print("Color Plane: ");
 		if(view.rButton.isSelected())
 		{
-			System.out.println("Red selected");
+			//System.out.println("Red selected");
 			colorString = "RED";
 		}
 		else if(view.gButton.isSelected())
 		{
-			System.out.println("Green selected");
+			//System.out.println("Green selected");
 			colorString = "GREEN";
 		}
 		else if(view.bButton.isSelected())
 		{
-			System.out.println("Blue selected");
+			//System.out.println("Blue selected");
 			colorString = "BLUE";
 		}
 		else
 		{
-			System.out.println("Unable to get selected color plane");
+			//System.out.println("Unable to get selected color plane");
 		}
 		
-		System.out.print("Mapping Function: ");
+		//System.out.print("Mapping Function: ");
 		{
 			if(view.lineButton.isSelected())
 			{
-				System.out.println("Linear selected");
+				//System.out.println("Linear selected");
 			}
 			else if(view.hashButton.isSelected())
 			{
-				System.out.println("Hash selected");
+				//System.out.println("Hash selected");
 			}
 			else if(view.ttbButton.isSelected())
 			{
-				System.out.println("Top to Bottom selected");
+				//System.out.println("Top to Bottom selected");
 			}
 		}
 		

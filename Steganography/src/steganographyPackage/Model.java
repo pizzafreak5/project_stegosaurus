@@ -44,7 +44,7 @@ private String selectedDecryptFilePath;
 
 	public void goDecrypt() throws IOException {
 		System.out.println("Application launch");
-		String temp_string = Image_decoder.linear_decode(keyFilePath, encryptedFilePath);
+		String temp_string = Image_decoder.linear_decode(keyFilePath, encryptedFilePath, selectedDecryptFilePath);
 		System.out.println("temp_string/decoder result: "+ temp_string);
 	}
 
@@ -213,9 +213,17 @@ private String selectedDecryptFilePath;
 			
 			String temp_path = directoryChooser.getCurrentDirectory().getAbsolutePath();
 			//temp_path = temp_path.substring(0, temp_path.length() - 1);
-			this.selectedDecryptFilePath = temp_path.trim() + "/";
 			
-			System.out.println(selectedDecryptFilePath);
+			if (temp_path.contains("\\")){
+				this.selectedDecryptFilePath = temp_path.trim() + "\\";
+			}
+			else {
+				this.selectedDecryptFilePath = temp_path.trim() + "/";
+			}
+			
+			
+			
+			System.out.println("Selected Path " + selectedDecryptFilePath);
 		} else {
 			System.out.println("No Selection ");
 			directoryChooser = null;

@@ -16,9 +16,10 @@ import java.lang.Math.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 public class Image_decoder {
 
-    public static String linear_decode(String original_filename, String secret_filename) throws IOException {
+    public static String linear_decode(String original_filename, String secret_filename, String destination_path) throws IOException {
 
         /*
         Description of linear decoding function:
@@ -126,6 +127,10 @@ public class Image_decoder {
         }
         System.out.println("The fileString string = " + fileString.toString());
         
+        //Create actual filename string
+        
+        
+        
         
         //break up into last List, which is now the secret message
         List<Integer> secret_message = bits.subList(firstDelimiter + 1 , secondDelimiter);
@@ -144,7 +149,7 @@ public class Image_decoder {
         for (int i = 0 ;  i < messageString.length() - 6 ; i++){
         	String tempString = messageString.substring(i, i+8);
         	String reversedString = new StringBuilder(tempString).reverse().toString();
-            System.out.println("reversedString = " + reversedString);
+            //System.out.println("reversedString = " + reversedString);
         	finalString += reversedString;
         	i += 7;
         }
@@ -165,8 +170,17 @@ public class Image_decoder {
             };
         }
         
+        //Pull Filename out of the Loaded Image
+        
+        
+        
         //Creation of the output file
-        FileOutputStream outputfile = new FileOutputStream("Default_out.txt");
+        Random rng = new Random();
+        int filenumber = Math.abs(rng.nextInt(10000));
+        
+        FileOutputStream outputfile = new FileOutputStream(destination_path + "decoded_secret" + Integer.toString(filenumber)+ ".txt");
+        
+        System.out.println("printing to :" + destination_path + "decoded_secret" + Integer.toString(filenumber)+ ".txt");
         
         //only sending the last of the 8 bits that is in an integer byte
         int out_byte = 0;
