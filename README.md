@@ -8,14 +8,13 @@ created by Garret Schwartz, Tegan Straley, & Justin Hockenberry for CSCI 4800 at
   Download zip. If you use Eclipse, set your working directory to where you extracted the zip. In the run configurations, set the Main class to 'steganographyPackage.Main'.
   
 **3. Run instructions**
-  Make sure JVM is on computer. Either...
-      --Download zip and execute jar. 
-      --If you completed the build instructions, press Run. 
+Make sure JVM is on computer. Either...
+  - Download zip and execute jar. 
+  - If you completed the build instructions, press Run. 
 
-  
  **4. Program restrictions**
-   1. Program can only encode and decode .png images!
-   2. Encoded/output image is saved as "encoded_image_<number>.png" in the destination folder set by the user. 
-   3. Currently, the program is only working with the Linear encoding and decoding.
+- Program can only encode and decode .png images!
+- Encoded/output image is saved as "encoded_image_<number>.png" in the destination folder set by the user. 
+- Currently, the program is only working with the Linear encoding and decoding. 
   
 
