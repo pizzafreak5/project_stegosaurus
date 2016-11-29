@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -126,6 +128,7 @@ public class View {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);           
         frame.setSize(525,420);        
         frame.setVisible(true);
+        frame.setResizable(false);
         
 ///////////// Page 1 - About ///////////////        
         tabbedPane = new JTabbedPane();
@@ -332,7 +335,7 @@ public class View {
 		
 	    JPanel tutorialPanel = new JPanel(new BorderLayout());
 		slideShowPanel = new JPanel();
-		slideShowIcon = new ImageIcon();
+		
 		try {
 			slide0 = ImageIO.read(new File("src/tutorialSlide_0 small.png"));
 			slide1 = ImageIO.read(new File("src/tutorialSlide_1 small.png"));
@@ -341,22 +344,21 @@ public class View {
 			slide4 = ImageIO.read(new File("src/tutorialSlide_4 small.png"));
 			slide5 = ImageIO.read(new File("src/tutorialSlide_5 small.png"));
 			slide6 = ImageIO.read(new File("src/tutorialSlide_6 small.png"));
-			
+		
 			slideArray = new BufferedImage[]{slide0, slide1, slide2, slide3, slide4, slide5, slide6};
-		
-		
+			
+			slideShowIcon = new ImageIcon();
 		 	slideShowIcon.setImage(slide0);
 		    slideShowLabel = new JLabel();
 		    slideShowLabel.setIcon(slideShowIcon);
+
+		    
 		} catch (IOException e) {
 			System.out.println("Can't paint the encrypt map");
 		}
 		
-	
 		slideShowPanel.add(slideShowLabel, BorderLayout.CENTER);
-		
-		
-		
+
 		JPanel tutorialButtonPanel = new JPanel();
 		
 		nextIcon = new ImageIcon("src/Right-48.png");
